@@ -8,6 +8,14 @@ app.get('/', (req, res) => {
     })
 })
 
+app.get('/health', (req, res) => {
+    res.status(200).json({
+        status: 'ok',
+        uptime: process.uptime(),
+        timestamp: new Date().toISOString()
+    })
+})
+
 app.get((req, res) => {
     res.status(404).json({
         message: 'page not found'
