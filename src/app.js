@@ -1,6 +1,9 @@
 const express = require('express')
+const client = require('prom-client')
 const app = express()
 const PORT = 3500
+
+client.collectDefaultMetrics()
 
 app.get('/', (req, res) => {
     res.json({
@@ -14,6 +17,11 @@ app.get('/health', (req, res) => {
         uptime: process.uptime(),
         timestamp: new Date().toISOString()
     })
+})
+
+app.get('/metrics', async (req, res) => {
+    res.set('Content-Type', client.register.contentType)
+    res.send(await client.register.metrics())
 })
 
 app.get((req, res) => {
